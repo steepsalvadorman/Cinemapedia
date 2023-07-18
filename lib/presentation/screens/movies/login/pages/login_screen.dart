@@ -2,6 +2,10 @@ import 'package:cinemapedia/domain/entities/login_entities/usuario.dart';
 import 'package:cinemapedia/infrastructure/datasources/userbackend_datasource.dart';
 import 'package:flutter/material.dart';
 
+import '../components/my_button.dart';
+import '../components/my_textfield.dart';
+import '../components/square_tile.dart';
+
 class LoginScreen extends StatefulWidget {
   static const String name = 'login-screen';
 
@@ -17,7 +21,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   final UserBackendDatasource _datasource = UserBackendDatasource();
 
-  void _signIn() async {
+  void signIn() async {
     final user = _userController.text;
     final password = _passwordController.text;
     Usuario usuario = Usuario(usuario: user, password: password);
@@ -42,30 +46,146 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _userController,
-              decoration: const InputDecoration(
-                labelText: 'User',
+      backgroundColor: Colors.grey[300],
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 50),
+
+              // logo
+              const Icon(
+                Icons.lock,
+                size: 100,
               ),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
+
+              const SizedBox(height: 50),
+
+              // welcome text
+              Text(
+                '¡Bienvenido a Cinemapedia!',
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 16,
+                ),
               ),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _signIn,
-              child: const Text('Sign In'),
-            ),
-          ],
+
+              const SizedBox(height: 25),
+
+              // username textfield
+              MyTextField(
+                controller: _userController,
+                hintText: 'Username',
+                obscureText: false,
+              ),
+
+              const SizedBox(height: 10),
+
+              // password textfield
+              MyTextField(
+                controller: _passwordController,
+                hintText: 'Password',
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 10),
+
+              // forgot password?
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      '¿Has olvidado tu contraseña?',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              // sign in button
+              MyButton(
+                onTap: signIn,
+              ),
+
+              const SizedBox(height: 50),
+
+              // or continue with
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        'Continuar con',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 50),
+
+              // google + apple sign in buttons
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // google button
+                  SquareTile(imagePath: 'assets/images/google.png'),
+
+                  SizedBox(width: 25),
+
+                  // apple button
+                  SquareTile(imagePath: 'assets/images/apple.png')
+                ],
+              ),
+
+              const SizedBox(height: 50),
+
+              // not a member? register now
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '¿No es un miembro?',
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text(
+                    'Regístrate ahora',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+          ),
         ),
       ),
     );

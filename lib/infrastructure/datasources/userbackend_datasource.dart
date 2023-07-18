@@ -4,29 +4,43 @@ import 'package:dio/dio.dart';
 
 class UserBackendDatasource extends UsuarioDatasource {
   final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'http://192.168.0.108:8000',
+    baseUrl: 'http://192.168.0.114:4000',
   ));
 
-  @override
+@override
 Future<bool> validarUsuario(Usuario user) async {
   try {
     // Realizar la solicitud HTTP para validar las credenciales de usuario
     Response response = await _dio.post(
-      '/user/validate',
+      '/validate',
       data: {
-        'user': user.usuario,
+        'username': user.usuario,
         'password': user.password,
       },
-      options: Options(contentType: Headers.formUrlEncodedContentType),
+      options: Options(contentType: Headers.jsonContentType),
     );
 
     // Verificar el estado de la respuesta HTTP
     if (response.statusCode == 200) {
-      // Verificar si el campo "email" está presente en la respuesta JSON
-      return response.data.containsKey('email');
+      // Decodificar la respuesta JSON
+      Map<String, dynamic> responseData = response.data as Map<String, dynamic>;
+
+      // Verificar si la autenticación fue exitosa en la respuesta del servidor
+      bool authenticated = responseData['authenticated'] ?? false;
+      String message = responseData['message'] ?? '';
+
+      // Mostrar el mensaje en la consola
+      if (authenticated) {
+        print('Usuario válido');
+      } else {
+        print('Usuario no válido: $message');
+      }
+
+      return authenticated;
     } else {
-      // Manejar el caso en que la respuesta no sea exitosa
-      throw Exception('Error en la solicitud HTTP: ${response.statusCode}');
+      // Si el servidor responde con cualquier otro código, se considera que el usuario no es válido
+      print('Error en la solicitud HTTP: ${response.statusCode}');
+      return false;
     }
   } catch (error) {
     // Mostrar el error en la consola
@@ -34,6 +48,9 @@ Future<bool> validarUsuario(Usuario user) async {
     throw Exception('Error al validar el usuario: $error');
   }
 }
+
+
+
 
 
 
