@@ -1,23 +1,24 @@
 import 'package:cinemapedia/domain/entities/login_entities/usuario.dart';
 import 'package:cinemapedia/infrastructure/datasources/userbackend_datasource.dart';
-import 'package:cinemapedia/presentation/screens/movies/login/pages/register_screen.dart';
+import 'package:cinemapedia/presentation/screens/movies/login/components/my_button_fpass.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-import '../components/my_button.dart';
 import '../components/my_textfield.dart';
 import '../components/square_tile.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const String name = 'login-screen';
 
-  const LoginScreen({super.key});
+
+
+class ForgotPassScreen extends StatefulWidget {
+  static const String name = 'fpass-screen';
+
+  const ForgotPassScreen({super.key});
 
   @override
-  LoginScreenState createState() => LoginScreenState();
+  ForgotPassScreenState createState() => ForgotPassScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class ForgotPassScreenState extends State<ForgotPassScreen> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -68,7 +69,7 @@ class LoginScreenState extends State<LoginScreen> {
 
                 // welcome text
                 Text(
-                  '¡Bienvenido a Cinemapedia!',
+                  'Recuperar Contraseña',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -86,39 +87,10 @@ class LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 10),
 
-                // password textfield
-                MyTextField(
-                  controller: _passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-
-                const SizedBox(height: 10),
-
-                // forgot password?
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: GestureDetector(
-                    onTap: () => context.push('/fpass'),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          '¿Has olvidado tu contraseña?',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
                 const SizedBox(height: 25),
 
                 // sign in button
-                MyButton(
+                MyButtonFPass(
                   onTap: signIn,
                 ),
 
@@ -171,26 +143,7 @@ class LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 50),
 
                 // not a member? register now
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '¿No es un miembro?',
-                      style: TextStyle(color: Colors.grey[700]),
-                    ),
-                    const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: () => context.push('/register'),
-                      child: const Text(
-                        'Regístrate ahora',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
+               
               ],
             ),
           ),
