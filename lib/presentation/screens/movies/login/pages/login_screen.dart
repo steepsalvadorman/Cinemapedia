@@ -1,6 +1,6 @@
 import 'package:cinemapedia/domain/entities/login_entities/usuario.dart';
 import 'package:cinemapedia/infrastructure/datasources/userbackend_datasource.dart';
-import 'package:cinemapedia/presentation/screens/movies/login/pages/register_screen.dart';
+import 'package:cinemapedia/presentation/screens/movies/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -23,26 +23,43 @@ class LoginScreenState extends State<LoginScreen> {
 
   final UserBackendDatasource _datasource = UserBackendDatasource();
 
-  void signIn() async {
+  void signIn(BuildContext context) {
     final user = _userController.text;
     final password = _passwordController.text;
     Usuario usuario = Usuario(usuario: user, password: password);
-    try {
-      final isValidUser = await _datasource.validarUsuario(usuario);
 
+    _datasource.validarUsuario(usuario).then((isValidUser) {
       if (isValidUser) {
         // Usuario válido, realizar acciones adicionales aquí
-        // Por ejemplo, navegar a la siguiente pantalla
-        // Navigator.pushNamed(context, NextScreen.name);
-        print('Inicio de sesión exitoso');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(pageIndex: 0),
+          ),
+        );
       } else {
-        // Usuario no válido, mostrar mensaje de error o realizar acciones adicionales
-        print('Credenciales inválidas');
+        // Usuario no válido, mostrar mensaje de error en un cuadro de diálogo
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Error'),
+            content: const Text(
+                'Credenciales inválidas. Por favor, verifica tus datos.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Cerrar el cuadro de diálogo
+                },
+                child: const Text('Aceptar'),
+              ),
+            ],
+          ),
+        );
       }
-    } catch (error) {
+    }).catchError((error) {
       // Error al validar el usuario, mostrar mensaje de error o realizar acciones adicionales
       print('Error al validar el usuario: $error');
-    }
+    });
   }
 
   @override
@@ -119,7 +136,10 @@ class LoginScreenState extends State<LoginScreen> {
 
                 // sign in button
                 MyButton(
-                  onTap: signIn,
+                  onTap: () {
+                    signIn(
+                        context); // Pasamos el contexto actual del widget al llamar a la función signIn
+                  },
                 ),
 
                 const SizedBox(height: 50),
