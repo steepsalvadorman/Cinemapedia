@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 
 class UserBackendDatasource extends UsuarioDatasource {
   final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'http://192.168.0.114:4000',
+    baseUrl: 'http://192.168.18.27:4000',
   ));
 
 @override

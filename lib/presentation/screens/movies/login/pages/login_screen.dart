@@ -38,8 +38,11 @@ class LoginScreenState extends State<LoginScreen> {
           ),
         );
       } else {
-        // Usuario no válido, mostrar mensaje de error en un cuadro de diálogo
-        showDialog(
+        // Usuario no válido, mostrar mensaje de error en un cuadro de diálogo    
+      }
+    }).catchError((error) {
+      // Error al validar el usuario, mostrar mensaje de error o realizar acciones adicionales
+      showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Error'),
@@ -55,10 +58,6 @@ class LoginScreenState extends State<LoginScreen> {
             ],
           ),
         );
-      }
-    }).catchError((error) {
-      // Error al validar el usuario, mostrar mensaje de error o realizar acciones adicionales
-      print('Error al validar el usuario: $error');
     });
   }
 
