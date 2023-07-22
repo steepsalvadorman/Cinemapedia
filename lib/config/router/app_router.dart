@@ -25,7 +25,7 @@ final appRouter = GoRouter(
     ),
 
     GoRoute(
-      path: '/home/:page', // Asegúrate de agregar un slash al inicio de la ruta
+      path: '/home/:page', 
       name: HomeScreen.name,
       builder: (context, state) {
         final pageIndex = int.parse(state.params['page'] ?? '0');
@@ -34,7 +34,7 @@ final appRouter = GoRouter(
       },
       routes: [
         GoRoute(
-          path: 'movie/:id', // ¡Eliminamos la barra diagonal al inicio de la ruta!
+          path: 'movie/:id', 
           name: MovieScreen.name,
           builder: (context, state) {
             final movieId = state.params['id'] ?? 'no-id';
